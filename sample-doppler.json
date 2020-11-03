@@ -1,0 +1,8 @@
+{
+    "DEBUG": "yodaspeak:*",
+    "LOGGING": "dev",
+    "NODE_ENV": "development",
+    "RATE_LIMITING_ENABLED": "true",
+    "YODA_TRANSLATE_API_ENDPOINT": "https://api.funtranslations.com/translate/yoda.json",
+    "YODA_TRANSLATE_API_KEY": ""
+}
