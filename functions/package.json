@@ -2,14 +2,13 @@
     "name": "functions",
     "description": "Yoda Speak on Firebase using Doppler for app config and secrets manaagement",
     "scripts": {
-        "serve": "doppler run -- firebase emulators:start --only functions",
-        "shell": "doppler run -- firebase functions:shell",
-        "configure": "firebase functions:config:unset doppler && firebase functions:config:set doppler=\"$(doppler secrets download --no-file --silent)\"",
+        "serve": "firebase emulators:start --only functions",
+        "shell": "firebase functions:shell",
+        "configure": "firebase functions:config:unset env && firebase functions:config:set env=\"$(doppler secrets download --no-file --silent)\"",
         "deploy": "npm run configure && firebase deploy --only functions",
         "logs": "firebase functions:log",
         "lint": "eslint --fix --quiet",
         "format": "prettier --write --loglevel error .",
-        "view-secrets": "doppler secrets download --config dev --no-file --silent | jq",
         "test-api-local": "curl --silent -X 'POST' 'http://localhost:5001/yodaspeak/us-central1/app/translate' -H 'Content-Type: application/x-www-form-urlencoded; charset=utf-8' --data-urlencode 'text=Secrets must not be stored in git repositories'",
         "test-api-production": "curl --silent -X 'POST' 'https://us-central1-yodaspeak.cloudfunctions.net/app/translate' -H 'Content-Type: application/x-www-form-urlencoded; charset=utf-8' --data-urlencode 'text=Secrets must not be stored in git repositories'"
     },

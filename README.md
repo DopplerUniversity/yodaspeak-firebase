@@ -6,6 +6,7 @@ A sample application showing how to use [Doppler](https://doppler.com/) to manag
 
 * You're familiar with Firebase Functions and have deployed a function previously
 * You're familiar with Doppler, and have installed and authenitcated via the CLI with `doppler login`.
+* You've set up a project in Doppler 
 
 ## Setup
 
@@ -13,18 +14,18 @@ You can either manually create a new project in the [Doppler Dashboard](https://
 
 ## Local development
 
-Change into the `functions` directory, then to ensure Doppler is configured correctly, run:
+> NOTE: These commands are to be fun inside the `functions` directory.
+
+To run the server:
 
 ```sh
-doppler secrets download --config dev --no-file --format env
+./bin/dev.sh npm run serve
 ```
 
-During local developmentment, config is set via environment variables so as not to save secrets unencrypted to the file system.
-
-To start the emulator to preview the function locally, run:
+To run the shell:
 
 ```sh
-npm run serve
+./bin/dev.sh npm run shell
 ```
 
 You can check the function is working correctly by opening another terminal, then running:

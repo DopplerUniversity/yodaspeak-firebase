@@ -1,24 +1,9 @@
 const functions = require('firebase-functions')
+const config = functions.config().env
 
-const logTable = (name, obj) => {
-    let table = []
-    Object.keys(obj).forEach(key => table.push({ KEY: key, VALUE: obj[key] }))
-    console.log(`### ${name} ###`)
-    console.table(table)
+// Handling nested JSON keys during local development when JSON config comes directly from
+if (typeof config.NESTED_JSON === 'string') {
+    config.TEST = JSON.parse(config.NESTED_JSON)
 }
-
-const get = key => {
-    return process.env.NODE_ENV === 'production' ? functions.config().doppler[key] : process.env[key]
-}
-
-const config = Object.freeze({
-    DEBUG: get('DEBUG'),
-    LOGGING: get('LOGGING'),
-    YODA_TRANSLATE_API_ENDPOINT: get('YODA_TRANSLATE_API_ENDPOINT'),
-    YODA_TRANSLATE_API_KEY: get('YODA_TRANSLATE_API_KEY'),
-    RATE_LIMITING_ENABLED: get('RATE_LIMITING_ENABLED') === 'true' ? true : false,
-})
-
-logTable('APP CONFIG', config)
 
 module.exports = config
