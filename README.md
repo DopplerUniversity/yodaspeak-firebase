@@ -10,11 +10,17 @@ A sample application showing how to use [Doppler](https://doppler.com/) to manag
 
 ## Setup
 
-You can either manually create a new project in the [Doppler Dashboard](https://dashboard.doppler.com/) and configure it locally using the contents of `sample-doppler.json` to populate the initial list of secrets, or you can run the script at `./bin/doppler-project-setup.sh` to have this done for you programatically.
+You can manually set up the project in the [Doppler Dashboard](https://dashboard.doppler.com/) to creating a new project called `yodaspeak-firebase` and populating the initial list of secrets using `sample-doppler-secrets.json`, or you can do it programatically by running:
+
+```sh
+node functions/setup-doppler-project.js
+```
 
 ## Local development
 
 > NOTE: These commands are to be fun inside the `functions` directory.
+
+Presuming you've created the project with the required secrets, now run `doppler setup` to configure the Doppler CLI for this repo.
 
 To run the server:
 

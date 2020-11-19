@@ -9,8 +9,8 @@
         "logs": "firebase functions:log",
         "lint": "eslint --fix --quiet",
         "format": "prettier --write --loglevel error .",
-        "test-api-local": "curl --silent -X 'POST' 'http://localhost:5001/yodaspeak/us-central1/app/translate' -H 'Content-Type: application/x-www-form-urlencoded; charset=utf-8' --data-urlencode 'text=Secrets must not be stored in git repositories'",
-        "test-api-production": "curl --silent -X 'POST' 'https://us-central1-yodaspeak.cloudfunctions.net/app/translate' -H 'Content-Type: application/x-www-form-urlencoded; charset=utf-8' --data-urlencode 'text=Secrets must not be stored in git repositories'"
+        "test-api-local": "curl --silent -X 'POST' 'http://localhost:5001/yodaspeak/us-central1/app/translate' -H 'Content-Type: application/x-www-form-urlencoded; charset=utf-8' --data-urlencode 'text=Secrets must not be stored in git repositories' | jq",
+        "test-api-production": "curl --silent -X 'POST' 'https://us-central1-yodaspeak.cloudfunctions.net/app/translate' -H 'Content-Type: application/x-www-form-urlencoded; charset=utf-8' --data-urlencode 'text=Secrets must not be stored in git repositories' | jq"
     },
     "engines": {
         "node": "12"
