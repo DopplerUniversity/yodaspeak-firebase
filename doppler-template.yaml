@@ -1,0 +1,25 @@
+projects:
+  - name: 'yodaspeak-firebase'
+    description: 'A simple application to translate English into Yoda Speak.'
+    environments:
+      - slug: 'dev'
+        name: 'Development'
+        configs:
+          - slug: 'dev'
+      - slug: 'prd'
+        name: 'Production'
+        configs:
+          - slug: 'prd'
+    secrets:
+      dev:
+        NODE_ENV: 'development'
+        DEBUG: 'yodaspeak:*'
+        LOGGING: 'dev'
+        YODA_TRANSLATE_API_ENDPOINT: 'https://api.funtranslations.com/translate/yoda.json'
+        YODA_TRANSLATE_API_KEY: ''
+      prd:
+        NODE_ENV: 'production'
+        DEBUG: 'app: server: error:'
+        LOGGING: 'yodaspeak:*'
+        YODA_TRANSLATE_API_ENDPOINT: 'https://api.funtranslations.com/translate/yoda.json'
+        YODA_TRANSLATE_API_KEY: ''

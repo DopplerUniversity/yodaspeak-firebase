@@ -2,50 +2,51 @@
 
 A sample application showing how to use [Doppler](https://doppler.com/) to manage config and secrets for Firebase Functions.
 
-## Prequisites
+[![Import to Doppler](https://raw.githubusercontent.com/DopplerUniversity/app-config-templates/main/doppler-button.svg)](https://dashboard.doppler.com/workplace/template/import?template=https://github.com/DopplerUniversity/yodaspeak-firebase/blob/main/doppler-template.yaml)
 
-* You're familiar with Firebase Functions and have deployed a function previously
-* You're familiar with Doppler, and have installed and authenitcated via the CLI with `doppler login`.
-* You've set up a project in Doppler 
+## Requirements
 
-## Setup
+* Familiar with Firebase Functions and have deployed a function previously
+- [Doppler CLI](https://docs.doppler.com/docs/enclave-installation)
+- Node 16
 
-You can manually set up the project in the [Doppler Dashboard](https://dashboard.doppler.com/) to creating a new project called `yodaspeak-firebase` and populating the initial list of secrets using `sample-doppler-secrets.json`, or you can do it programatically by running:
+## Set up
 
-```sh
-node functions/setup-doppler-project.js
-```
+Create the Project in Doppler using this [Doppler import link](https://dashboard.doppler.com/workplace/template/import?template=https%3A%2F%2Fgithub.com%2FDopplerUniversity%2Fyodaspeak-firebase%2Fblob%2Fmain%2Fdoppler-template.yaml) or run `doppler import` from the root of this repository.
 
 ## Local development
 
-> NOTE: These commands are to be fun inside the `functions` directory.
+Run `doppler setup` and choose the `yodaspeak-firebase` Project and `dev` config.
 
-Presuming you've created the project with the required secrets, now run `doppler setup` to configure the Doppler CLI for this repo.
+Change change into the `functions` directory to run the remainder of the local development commands.
+
+Install dependencies:
+
+```sh
+npm install
+```
 
 To run the server:
 
 ```sh
-./bin/dev.sh npm run serve
+npm run serve
 ```
 
-To run the shell:
+Then test it's working by visiting the [health-check](http://localhost:5001/yodaspeak-firebase/us-central1/app/healthz) and [translation endpoint](http://localhost:5001/yodaspeak-firebase/us-central1/app/translate?text=Secrets%20must%20not%20be%20stored%20in%20.env%20files):
 
-```sh
-./bin/dev.sh npm run shell
-```
-
-You can check the function is working correctly by opening another terminal, then running:
-
-```sh
-npm run test-api-local
-```
 
 ## Deployment
 
-It's recommended to deploy by running:
+Deployment consists of first, updating [config environment variables](https://firebase.google.com/docs/functions/config-env) by fetching the latest version of the secrets from Doppler and updating them in Firebase.
+
+```sh
+npm run config-env-set
+```
+
+Then redeploying the function to apply the changed configuration:
 
 ```sh
 npm run deploy
 ```
 
-This will fetch the latest version of the secrets from Doppler and set them in Firebase, before then packaging up the function for deployment.
+Then test it's working in production by visiting the [health-check](https://us-central1-yodaspeak-firebase.cloudfunctions.net/app/healthz) and [translation endpoint](https://us-central1-yodaspeak-firebase.cloudfunctions.net/app/translate?text=Secrets%20must%20not%20be%20stored%20in%20.env%20files):
