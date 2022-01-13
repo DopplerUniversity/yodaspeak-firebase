@@ -16,7 +16,11 @@ Create the Project in Doppler using this [Doppler import link](https://dashboard
 
 ## Local development
 
-Run `doppler setup` and choose the `yodaspeak-firebase` Project and `dev` config.
+From the root directory, configure the project and config by running:
+
+```sh
+doppler setup -- no-interactive
+```
 
 Change change into the `functions` directory to run the remainder of the local development commands.
 
@@ -29,18 +33,17 @@ npm install
 To run the server:
 
 ```sh
-npm run serve
+npm run functions
 ```
 
-Then test it's working by visiting the [health-check](http://localhost:5001/yodaspeak-firebase/us-central1/app/healthz) and [translation endpoint](http://localhost:5001/yodaspeak-firebase/us-central1/app/translate?text=Secrets%20must%20not%20be%20stored%20in%20.env%20files):
-
+Test it's working by visiting the [health-check](http://localhost:5001/yodaspeak-firebase/us-central1/app/healthz), [config](http://localhost:5001/yodaspeak-firebase/us-central1/app/config), or [translation endpoint](http://localhost:5001/yodaspeak-firebase/us-central1/app/translate?text=Secrets%20must%20not%20be%20stored%20in%20.env%20files):
 
 ## Deployment
 
 Deployment consists of first, updating [config environment variables](https://firebase.google.com/docs/functions/config-env) by fetching the latest version of the secrets from Doppler and updating them in Firebase.
 
 ```sh
-npm run config-env-set
+npm run configure
 ```
 
 Then redeploying the function to apply the changed configuration:
@@ -49,4 +52,4 @@ Then redeploying the function to apply the changed configuration:
 npm run deploy
 ```
 
-Then test it's working in production by visiting the [health-check](https://us-central1-yodaspeak-firebase.cloudfunctions.net/app/healthz) and [translation endpoint](https://us-central1-yodaspeak-firebase.cloudfunctions.net/app/translate?text=Secrets%20must%20not%20be%20stored%20in%20.env%20files):
+Then test it's working in production by visiting the [health-check](https://us-central1-yodaspeak-firebase.cloudfunctions.net/app/healthz), [config](https://us-central1-yodaspeak-firebase.cloudfunctions.net/app/config), or [translation endpoint](https://us-central1-yodaspeak-firebase.cloudfunctions.net/app/translate?text=Secrets%20must%20not%20be%20stored%20in%20.env%20files):

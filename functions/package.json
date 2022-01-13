@@ -2,9 +2,8 @@
     "name": "functions",
     "description": "Yoda Speak on Firebase using Doppler for app config and secrets management",
     "scripts": {
-        "serve": "doppler run -- firebase emulators:start --only functions",
-        "shell": "doppler run -- firebase functions:shell",
-        "config-env-set": "firebase functions:config:unset env && firebase functions:config:set env=\"$(doppler secrets download --config prd --no-file --format json --silent)\"",
+        "functions": "CLOUD_RUNTIME_CONFIG=\"$(doppler secrets download --no-file | jq '{env: .}')\" firebase emulators:start --only functions",
+        "configure": "firebase functions:config:unset env && firebase functions:config:set env=\"$(doppler secrets download --config prd --no-file --format json --silent)\"",
         "deploy": "firebase deploy --only functions",
         "logs": "firebase functions:log",
         "lint": "eslint --fix --quiet",

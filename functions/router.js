@@ -14,6 +14,10 @@ router.get('/', (req, res) => {
     res.send('Welcome to the Yoda Speak translator. Use the /translate endpoint to perform translations.')
 })
 
+router.get('/config', (req, res) => {
+    res.json(config)
+})
+
 router.get('/healthz', (req, res) => {
     res.send('Healthy, this server is.')
 })
