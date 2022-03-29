@@ -1,55 +1,91 @@
 # Yoda Speak Firebase Function
 
-A sample application showing how to use [Doppler](https://doppler.com/) to manage config and secrets for Firebase Functions.
-
-[![Import to Doppler](https://raw.githubusercontent.com/DopplerUniversity/app-config-templates/main/doppler-button.svg)](https://dashboard.doppler.com/workplace/template/import?template=https://github.com/DopplerUniversity/yodaspeak-firebase/blob/main/doppler-template.yaml)
+Sample repository showing how to integrate [Doppler with Firebase](https://docs.doppler.com/docs/enclave-firebase-installation).
 
 ## Requirements
 
-* Familiar with Firebase Functions and have deployed a function previously
 - [Doppler CLI](https://docs.doppler.com/docs/enclave-installation)
 - Node 16
 
 ## Set up
 
-Create the Project in Doppler using this [Doppler import link](https://dashboard.doppler.com/workplace/template/import?template=https%3A%2F%2Fgithub.com%2FDopplerUniversity%2Fyodaspeak-firebase%2Fblob%2Fmain%2Fdoppler-template.yaml) or run `doppler import` from the root of this repository.
+Create the `yodaspeak-firebase` project in Doppler:
 
-## Local development
+[![Import to Doppler](https://raw.githubusercontent.com/DopplerUniversity/app-config-templates/main/doppler-button.svg)](https://dashboard.doppler.com/workplace/template/import?template=https://github.com/DopplerUniversity/yodaspeak-firebase/blob/main/doppler-template.yaml)
 
-From the root directory, configure the project and config by running:
+Or from a terminal in the root application directory, run:
 
 ```sh
-doppler setup -- no-interactive
+doppler import
 ```
 
-Change change into the `functions` directory to run the remainder of the local development commands.
-
-Install dependencies:
+Then install the application dependencies:
 
 ```sh
 npm install
 ```
 
-To run the server:
+## Secrets
+
+This repository syncs Doppler secrets to [Firebase's environment variables store](https://firebase.google.com/docs/functions/config-env) by running the command:
 
 ```sh
-npm run functions
+npm run secrets-sync
 ```
 
-Test it's working by visiting the [health-check](http://localhost:5001/yodaspeak-firebase/us-central1/app/healthz), [config](http://localhost:5001/yodaspeak-firebase/us-central1/app/config), or [translation endpoint](http://localhost:5001/yodaspeak-firebase/us-central1/app/translate?text=Secrets%20must%20not%20be%20stored%20in%20.env%20files):
+Doppler is awesome because secrets are dynamically kept in sync during local development without using insecure and manually maintained `.env` or `.runtimeconfig.json` files.
 
-## Deployment
-
-Deployment consists of first, updating [config environment variables](https://firebase.google.com/docs/functions/config-env) by fetching the latest version of the secrets from Doppler and updating them in Firebase.
+The `serve` and `shell` commands use the Doppler CLI to provide secrets with the `CLOUD_RUNTIME_CONFIG` environment variable. The format required for local development can be seen by running:
 
 ```sh
-npm run configure
+npm run secrets --silent | jq '{doppler: .}'
 ```
 
-Then redeploying the function to apply the changed configuration:
+Secrets are then accessed from the `functions.config().doppler` property:
+
+```js
+const functions = require('firebase-functions')
+const secrets = functions.config().doppler
+```
+
+By using Doppler, you and your teammates will never have out of date secrets again. This makes onboarding new engineers a breeze, plus you don't have to worry about leaking credentials in unprotected text files.
+
+## Local development
+
+Open a terminal and change into the `functions` directory, then configure the Doppler CLI for local development by running:
 
 ```sh
+doppler setup
+```
+
+Start the Firebase functions emulator by running:
+
+```sh
+npm run serve
+```
+
+Then test the [translation endpoint](http://localhost:5001/yodaspeak-firebase/us-central1/translate?text=Secrets%20must%20not%20be%20stored%20in%20.env%20files).
+
+To launch the Firebase shell, run:
+
+```sh
+npm run shell
+```
+
+## Production
+
+Deploying to production is a two-step process:
+
+1. [Update your function environment variables](https://firebase.google.com/docs/functions/config-env)
+2. Update your function code
+
+Your CI/CD environment will need a [Doppler Service Token](https://docs.doppler.com/docs/service-tokens) injected as the `DOPPLER_TOKEN` environment variable to provide read-only access to the `Production` config.
+
+To deploy your Firebase function with the latest environment secrets from Doppler:
+
+```sh
+npm run secrets-sync
 npm run deploy
 ```
 
-Then test it's working in production by visiting the [health-check](https://us-central1-yodaspeak-firebase.cloudfunctions.net/app/healthz), [config](https://us-central1-yodaspeak-firebase.cloudfunctions.net/app/config), or [translation endpoint](https://us-central1-yodaspeak-firebase.cloudfunctions.net/app/translate?text=Secrets%20must%20not%20be%20stored%20in%20.env%20files):
+You can then test production by viewing the [index page](https://us-central1-yodaspeak-firebase.cloudfunctions.net/index), [secrets](https://us-central1-yodaspeak-firebase.cloudfunctions.net/secrets), or [translation endpoint](https://us-central1-yodaspeak-firebase.cloudfunctions.net/translate?text=Secrets%20must%20not%20be%20stored%20in%20.env%20files).
