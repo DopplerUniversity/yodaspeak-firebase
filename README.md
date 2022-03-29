@@ -81,11 +81,12 @@ Deploying to production is a two-step process:
 
 Your CI/CD environment will need a [Doppler Service Token](https://docs.doppler.com/docs/service-tokens) injected as the `DOPPLER_TOKEN` environment variable to provide read-only access to the `Production` config.
 
-To deploy your Firebase function with the latest environment secrets from Doppler:
+To deploy your Firebase function with the latest environment secrets from Doppler, simply run:
 
 ```sh
-npm run secrets-sync
 npm run deploy
 ```
+
+Check out the [deploy GitHub Action](./.github/workflows/deploy.yaml) for a full working example.
 
 You can then test production by viewing the [index page](https://us-central1-yodaspeak-firebase.cloudfunctions.net/index), [secrets](https://us-central1-yodaspeak-firebase.cloudfunctions.net/secrets), or [translation endpoint](https://us-central1-yodaspeak-firebase.cloudfunctions.net/translate?text=Secrets%20must%20not%20be%20stored%20in%20.env%20files).

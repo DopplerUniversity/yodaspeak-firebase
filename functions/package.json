@@ -2,10 +2,10 @@
     "name": "functions",
     "description": "Yoda Speak on Firebase using Doppler for app config and secrets management",
     "scripts": {
-        "serve": "CLOUD_RUNTIME_CONFIG=\"$(doppler secrets download --no-file | jq '{secrets: .}')\" firebase emulators:start --only functions",
-        "shell": "CLOUD_RUNTIME_CONFIG=\"$(doppler secrets download --no-file | jq '{secrets: .}')\" firebase functions:shell",
-        "secrets-sync": "firebase functions:config:unset secrets && firebase functions:config:set secrets=\"$(doppler secrets download --no-file)\"",
-        "deploy": "firebase deploy --only functions",
+        "serve": "CLOUD_RUNTIME_CONFIG=\"$(doppler secrets download --no-file | jq '{doppler: .}')\" firebase emulators:start --only functions",
+        "shell": "CLOUD_RUNTIME_CONFIG=\"$(doppler secrets download --no-file | jq '{doppler: .}')\" firebase functions:shell",
+        "secrets-sync": "firebase functions:config:unset doppler && firebase functions:config:set doppler=\"$(doppler secrets download --no-file)\"",
+        "deploy": "npm run secrets-sync && firebase deploy --only functions",
         "logs": "firebase functions:log",
         "lint": "eslint --fix --quiet",
         "format": "prettier --write --loglevel error ."
